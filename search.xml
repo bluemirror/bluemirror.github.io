@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Linux下源码安装Redis</title>
+    <url>/2021/01/04/Linux%E4%B8%8B%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<blockquote>
+<p>基本知识</p>
+<p>1、Redis的数据类型：</p>
+<p>　　字符串、列表（lists）、集合（sets）、有序集合（sorts sets）、哈希表（hashs）</p>
+<p>2、Redis和memcache相比的独特之处：</p>
+<p>　　（1）redis可以用来做存储（storge）、而memcache是来做缓存（cache）。这个特点主要是因为其有“持久化”功能</p>
+<p>　　（2）存储的数据有“结构”，对于memcache来说，存储的数据，只有一种类型——“字符串”，而redis则可以存储字符串、链表、集合、有序集合、哈序结构</p>
+<p>3、持久化的两种方式：</p>
+<p>　　Redis将数据存储于内存中，或被配置为使用虚拟内存。</p>
+<p>　　实现数据持久化的两种方式：（1）使用截图的方式，将内存中的数据不断写入磁盘（性能高，但可能会引起一定程度的数据丢失）</p>
+<p>　　　　　　　　　　　　　　　（2）使用类似mysql的方式，记录每次更新的日志</p>
+<p>4、Redis的主从同步：对提高读取性能非常有益</p>
+<p>5、Redis服务端的默认端口是6379</p>
+</blockquote>
+<ol>
+<li><p>Download Redis源码包</p>
+<p>下载地址：<code>http://redis.io/download</code>，下载最新稳定版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wget  http://download.redis.io/releases/redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure></li>
+<li><p>解压并进入其目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar xzvf redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a></li>
+<li><p>编译并安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> redis-5.0.3</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make MELLOC=libc</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> src</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install PREFIX=/usr/<span class="built_in">local</span>/redis</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><font color=red>注意：</font>必须使用make MELLOC=libc来编译，否则编译安装时会报错</p>
+</blockquote>
+</li>
+<li><p>将默认redis.conf 配置文件复制到/usr/local/redis/etc/ 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp /root/redis-5.0.3/redis.conf /usr/<span class="built_in">local</span>/redis/etc/</span></span><br></pre></td></tr></table></figure>
+
+<p>  默认情况，redis不是在后台运行，我们需要把redis放在后台运行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
+<p> 将daemonize的值改为yes</p>
+</li>
+</ol>
+<ol start="5">
+<li><p>启动redis服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-server /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
+<p> 检查是否有redis进程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ps -ef | grep 6379</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端连接</p>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli  -h 127.0.0.1 -p 6379</span></span><br></pre></td></tr></table></figure>
+
+<p>   设置键值对: <code>set mykey abc</code><br>   取出键值对: <code>get mykey</code></p>
+</li>
+<li><p>停止redis实例</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> pkill redis-server</span></span><br></pre></td></tr></table></figure></li>
+<li><p>让redis开机自启</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/rc.local</span></span><br></pre></td></tr></table></figure>
+<p>添加:</p>
+</li>
+</ol>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">/usr/local/redis/bin/redis-server</span> <span class="string">/usr/local/redis/etc/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"></span><br><span class="line"><span class="attr">sudo</span> <span class="string">-i -u root /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf &gt; /root/redis_startup.log 2&gt;&amp;1</span></span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li><p>在CentOS 7下需增加/etc/rc.d/rc.local的执行权限才能使/etc/rc.local生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chmod +x /etc/rc.d/rc.local</span></span><br></pre></td></tr></table></figure>
+<p>注：请参考《CentOS 7开机/etc/rc.local 不执行的问题》- <a href="http://wangying.sinaapp.com/archives/2105">http://wangying.sinaapp.com/archives/2105</a></p>
+</li>
+</ol>
+<blockquote>
+<p>/usr/local/redis/bin目录下的文件：</p>
+<p>　　redis-benchmark：redis性能测试工具</p>
+<p>　　redis-check-aof：检查aof日志的工具</p>
+<p>　　redis-check-dump：检查rdb日志的工具</p>
+<p>　　redis-cli：连接用的客户端</p>
+<p>　　redis-server：redis服务进程</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>源码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS 安装C编译环境</title>
+    <url>/2021/01/04/CentOS%20%E5%AE%89%E8%A3%85C%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="CentOS-安装C编译环境"><a href="#CentOS-安装C编译环境" class="headerlink" title="CentOS 安装C编译环境"></a>CentOS 安装C编译环境</h1><blockquote>
+<p>参考：<a href="https://www.cnblogs.com/liyuanhong/articles/11162899.html">https://www.cnblogs.com/liyuanhong/articles/11162899.html</a></p>
+</blockquote>
+<p>yum安装C编译环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> yum -y install gcc-c++ ncurses-devel cmake make perl gcc autoconf automake zlib libxml libgcrypt libtool bison m4 pcre pcre-devel zlib-devel openssl openssl-devel</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>另外，如果嫌麻烦的话，那就直接 <code>$ yum groupinstall &quot;Development tools&quot;</code></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>C</tag>
+        <tag>CentOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NFS服务</title>
+    <url>/2020/12/21/NFS%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h1 id="NFS-的软件结构"><a href="#NFS-的软件结构" class="headerlink" title="NFS 的软件结构"></a>NFS 的软件结构</h1><p>NFS 这个咚咚真的是很简单，上面我们提到的 NFS 软件中，配置文件只有一个，执行档也不多， 记录文件也三三两两而已吶！赶紧先来看一看吧！ ^_^</p>
+<ul>
+<li><strong>主要配置文件：/etc/exports</strong><br>这个档案就是 NFS 的主要配置文件了！不过，系统并没有默认值，所以这个档案『 不一定会存在』，你可能必须要使用 vim 主动的建立起这个档案喔！我们等一下要谈的设定也仅只是这个档案而已吶！</li>
+</ul>
+<ul>
+<li><strong>NFS 文件系统维护指令：/usr/sbin/exportfs</strong><br>这个是维护 NFS 分享资源的指令，我们可以利用这个指令重新分享 /etc/exports 变更的目录资源、将 NFS Server 分享的目录卸除或重新分享等等，这个指令是 NFS 系统里面相当重要的一个喔！至于指令的用法我们在底下会介绍。</li>
+</ul>
+<ul>
+<li><strong>分享资源的登录档：/var/lib/nfs/*tab</strong><br>在 NFS 服务器的登录文件都放置到 /var/lib/nfs/ 目录里面，在该目录下有两个比较重要的登录档， 一个是 etab ，主要记录了 NFS 所分享出来的目录的完整权限设定值；另一个 xtab 则记录曾经链接到此 NFS 服务器的相关客户端数据。</li>
+</ul>
+<ul>
+<li><strong>客户端查询服务器分享资源的指令：/usr/sbin/showmount</strong><br>这是另一个重要的 NFS 指令。exportfs 是用在 NFS Server 端，而 showmount 则主要用在 Client 端。这个 showmount 可以用来察看 NFS 分享出来的目录资源喔！</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h1><p>/etc/exports： 共享配置文件</p>
+<p>共享格式为：共享目录绝对路径 授权访问的IP或网段(权限1，权限2)</p>
+<p>如：/test 192.168.229.0/24(ro)</p>
+<p>权限说明：</p>
+<p>​                    ro 只读访问</p>
+<p>​                    rw 读写访问</p>
+<p>​                    sync 所有数据在请求时写入共享</p>
+<h1 id="NFS-Server端"><a href="#NFS-Server端" class="headerlink" title="NFS Server端"></a>NFS Server端</h1><p><strong>a.  nfs安装</strong></p>
+<p><code># yum install nfs-utils</code></p>
+<p><code> # yum install rpcbind</code></p>
+<p>NFS 服务端需要安装 <code>rpcbind</code> 和 <code>nfs-utils</code></p>
+<p><strong>b. nfs开机启动</strong></p>
+<p><code># systemctl enable nfs-server</code></p>
+<p><strong>c. nfs启动</strong></p>
+<p>由于服务间的依赖关系，启动NFS之前先要确保rpcbind启动</p>
+<p><code># systemctl is-active rpcbind</code></p>
+<p><code># systemctl start nfs</code></p>
+<p><strong>d. 验证启动</strong></p>
+<p><code># systemctl is-active nfs</code></p>
+<h2 id="示例1："><a href="#示例1：" class="headerlink" title="示例1："></a>示例1：</h2><p>以读/写的方式共享目录/test 同时只能被192.168.229.0域中系统访问</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /test</span><br><span class="line">vim /etc/exports</span><br></pre></td></tr></table></figure>
+<p>修改配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;test	192.168.229.0&#x2F;24(rw,sync)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 刷新</span></span><br><span class="line">exportfs -r</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证</span></span><br><span class="line">exportfs -v</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看NFS服务器的 /etc/exports 所分享的目录数据</span></span><br><span class="line">showmount -e 192.168.229.147</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h2><ol>
+<li>新建目录/public，以只读的方式共享目录/public 同时只能被192.168.229.0域中系统访问</li>
+<li>新建目录/protected，以读/写的方式共享目录/protected 同时只能被192.168.229.0域中系统访问</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /public</span><br><span class="line">mkdir /protected</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 由于客户端挂载用户是nfsnobody，本示例要求客户端挂载后可读/写，我们是用root用户建立的目录，所以要给其他人7的权限</span></span><br><span class="line">chmod 757 /protected/</span><br></pre></td></tr></table></figure>
+<p>添加共享目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /etc/exports</span><br></pre></td></tr></table></figure>
+<p>修改配置：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">/public</span>		<span class="string">192.168.229.0/24(ro)</span></span><br><span class="line"><span class="meta">/protected</span>	<span class="string">192.168.229.0/24(rw,sync)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">exportfs -r</span><br><span class="line">exportfs -v</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="NFS客户端"><a href="#NFS客户端" class="headerlink" title="NFS客户端"></a>NFS客户端</h1><h2 id="安装NFS-支持软件包"><a href="#安装NFS-支持软件包" class="headerlink" title="安装NFS 支持软件包"></a>安装NFS 支持软件包</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install nfs-utils</span><br></pre></td></tr></table></figure>
+<p>客户端只需要安装 <code>nfs-utils</code> 即可</p>
+<h2 id="查看NFS服务器的-etc-exports-所分享的目录数据"><a href="#查看NFS服务器的-etc-exports-所分享的目录数据" class="headerlink" title="查看NFS服务器的 /etc/exports 所分享的目录数据"></a>查看NFS服务器的 /etc/exports 所分享的目录数据</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -e ：显示某部主机的 /etc/exports 所分享的目录数据。</span></span><br><span class="line">showmount -e 192.168.229.147</span><br></pre></td></tr></table></figure>
+<p><img src="https://rockimgbed.oss-cn-shanghai.aliyuncs.com/image-20201215103001006.png" alt="image-20201215103001006"></p>
+<h2 id="客户端手动挂载"><a href="#客户端手动挂载" class="headerlink" title="客户端手动挂载"></a>客户端手动挂载</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建挂载目录：</span></span><br><span class="line">mkdir /mnt/public</span><br><span class="line">mkdir /mnt/protected</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 挂载：</span></span><br><span class="line">mount -t nfs 192.168.229.147:/public /mnt/public/</span><br><span class="line">mount -t nfs 192.168.229.147:/protected /mnt/protected/</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="客户端自动挂载"><a href="#客户端自动挂载" class="headerlink" title="客户端自动挂载"></a>客户端自动挂载</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line"></span><br><span class="line">192.168.229.147:&#x2F;protected       &#x2F;mnt&#x2F;protected          nfs     defaults,v3 0 0</span><br></pre></td></tr></table></figure>
+<p>备注： 若不设置开机自动挂载NFS盘，则当服务器重启后/data/NBUMOUNT_NAS/ 将不会挂载到NFS盘上，所有Copy到/data/NBUMOUNT_NAS/ 目录下的文件将全部存放在服务器本地盘下，最终会引起服务器磁盘空间减小</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>NFS</tag>
+        <tag>DocShare</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NexT主题设置</title>
+    <url>/2020/12/28/NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="NexT主题安装"><a href="#NexT主题安装" class="headerlink" title="NexT主题安装"></a>NexT主题安装</h1><blockquote>
+<p>NexT主题官网： <a href="http://theme-next.iissnan.com/">http://theme-next.iissnan.com/</a></p>
+<p>最新版本NexT的GitHub地址： <a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></p>
+</blockquote>
+<ol>
+<li><p>下载新的主题包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\blog</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next          </span><br></pre></td></tr></table></figure></li>
+<li><p>修改Hexo的配置文件：_config.yml，更换theme为 <code>next</code></p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme</span>: <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<a id="more"></a>
+
+<ol start="3">
+<li><p>重新生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\blog\</span><br><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>重新刷新<a href="http://localhost:4000/">http://localhost:4000/</a> 网站查看结果。</p>
+</li>
+</ol>
+<p><strong>升级：</strong></p>
+<p>NexT releases new versions every month. You can update to latest master branch by the following command:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> themes/next</span><br><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="NexT主题设置"><a href="#NexT主题设置" class="headerlink" title="NexT主题设置"></a>NexT主题设置</h1><blockquote>
+<p>NexT主题官网： <a href="http://theme-next.iissnan.com/">http://theme-next.iissnan.com/</a></p>
+</blockquote>
+<p><strong>NexT主题配置文件</strong>：<code>C:\blog\themes\next\_config.yml</code></p>
+<h2 id="菜单设置（左侧栏）"><a href="#菜单设置（左侧栏）" class="headerlink" title="菜单设置（左侧栏）"></a>菜单设置（左侧栏）</h2><p>启用About，Tags，Categories等菜单。</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">home</span>: <span class="string">/ || fa fa-home</span></span><br><span class="line">  <span class="attr">about</span>: <span class="string">/about/ || fa fa-user</span></span><br><span class="line">  <span class="attr">tags</span>: <span class="string">/tags/ || fa fa-tags</span></span><br><span class="line">  <span class="attr">categories</span>: <span class="string">/categories/ || fa fa-th</span></span><br><span class="line">  <span class="attr">archives</span>: <span class="string">/archives/ || fa fa-archive</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="About页面设置"><a href="#About页面设置" class="headerlink" title="About页面设置"></a>About页面设置</h2><p>新建一个about页面：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo new page <span class="string">&quot;about&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>在blog/source下会生成一个新的文件夹about，在该文件夹下会有一个index.md文件。</p>
+<h2 id="头像设置"><a href="#头像设置" class="headerlink" title="头像设置"></a>头像设置</h2><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar</span>:<span class="string"></span></span><br><span class="line"><span class="comment">  # Replace the default image and set the url here.</span></span><br><span class="line"><span class="comment">  # url: /images/avatar.gif</span></span><br><span class="line">  <span class="attr">url</span>: <span class="string">/images/rock.jpg  </span></span><br><span class="line"><span class="comment">  # If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded</span>: <span class="string">false</span></span><br><span class="line"><span class="comment">  # If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated</span>: <span class="string">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Social设置"><a href="#Social设置" class="headerlink" title="Social设置"></a>Social设置</h2><p>启用Social链接:</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">social</span>:<span class="string"></span></span><br><span class="line"> <span class="attr">GitHub</span>: <span class="string">https://github.com/bluemirror || fab fa-github</span></span><br><span class="line"> <span class="meta">E-Mail</span>: <span class="string">mailto:rockqin@126.com || fa fa-envelope</span></span><br><span class="line"><span class="comment"> #Weibo: https://weibo.com/yourname || fab fa-weibo  </span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="链接设置"><a href="#链接设置" class="headerlink" title="链接设置"></a>链接设置</h2><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">links</span>:<span class="string"></span></span><br><span class="line"> <span class="attr">Bing</span>: <span class="string">https://cn.bing.com/</span></span><br><span class="line"> <span class="attr">Google</span>: <span class="string">https://www.google.com</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="创建“标签页”和“分类页”"><a href="#创建“标签页”和“分类页”" class="headerlink" title="创建“标签页”和“分类页”"></a>创建“标签页”和“分类页”</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">C:\blog&gt;hexo n page tags</span><br><span class="line">C:\blog&gt;hexo n page categories</span><br></pre></td></tr></table></figure>
+<p><strong>Tags页设置：</strong>C:\blog\source\tags\index.md</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Tags</span><br><span class="line">date: 2020-12-21 14:58:24</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p><strong>Categories页设置：</strong>C:\blog\source\categories\index.md</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Categories</span><br><span class="line">date: 2020-12-21 16:35:27</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="增加搜索功能"><a href="#增加搜索功能" class="headerlink" title="增加搜索功能"></a>增加搜索功能</h2><p>Local Search 由 flashlab 贡献，添加百度/谷歌/本地 自定义站点内容搜索。</p>
+<p>安装 hexo-generator-searchdb，在站点的根目录下执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>站点配置</code>文件，新增以下内容到任意位置：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">search</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">path</span>: <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field</span>: <span class="string">post</span></span><br><span class="line">  <span class="attr">format</span>: <span class="string">html</span></span><br><span class="line">  <span class="attr">limit</span>: <span class="string">10000</span></span><br></pre></td></tr></table></figure>
+<p>编辑 <code>主题配置</code>文件，启用本地搜索功能：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">enable</span>: <span class="string">true</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="不蒜子统计"><a href="#不蒜子统计" class="headerlink" title="不蒜子统计"></a>不蒜子统计</h2><p>编辑 <code>主题配置</code>文件 中的busuanzi_count的配置项。<br>当enable: true时，代表开启全局开关。若site_uv、site_pv、page_pv的值均为false时，不蒜子仅作记录而不会在页面上显示。</p>
+<h2 id="隐藏网页底部强力驱动"><a href="#隐藏网页底部强力驱动" class="headerlink" title="隐藏网页底部强力驱动"></a>隐藏网页底部强力驱动</h2><p>编辑配置文件： C:\blog\themes\next\layout_partials\footer.swig</p>
+<p>删除或注释掉footer.powered 相关项。</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">&lt;!--</span></span><br><span class="line"><span class="meta">&#123;%-</span> <span class="string">if theme.footer.powered %&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">&lt;div</span> <span class="string">class=&quot;powered-by&quot;&gt;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span></span><br><span class="line">      <span class="meta">&#123;%-</span> <span class="string">set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">endif %&#125;</span></span><br><span class="line">    <span class="meta">&#123;&#123;-</span> <span class="string">__(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span></span><br><span class="line">  <span class="attr">&lt;/div&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&#123;%-</span> <span class="string">endif %&#125;</span></span><br><span class="line"><span class="attr">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="实现统计功能-字数统计和阅读时长"><a href="#实现统计功能-字数统计和阅读时长" class="headerlink" title="实现统计功能(字数统计和阅读时长)"></a>实现统计功能(字数统计和阅读时长)</h2><h3 id="A-适用于NexT老版本，最新版无效"><a href="#A-适用于NexT老版本，最新版无效" class="headerlink" title="A. 适用于NexT老版本，最新版无效"></a>A. 适用于NexT老版本，最新版无效</h3><p>在站点的根目录下执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
+<p>主题配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">post_wordcount:</span><br><span class="line">  wordcount: true</span><br><span class="line">  min2read: true</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="B-适用于Hexo-NexT-v6-3-0-字数统计"><a href="#B-适用于Hexo-NexT-v6-3-0-字数统计" class="headerlink" title="B.  适用于Hexo NexT v6.3.0 字数统计"></a>B.  适用于Hexo NexT v6.3.0 字数统计</h3><blockquote>
+<p>参考： <a href="https://co5.me/2018/180613-wordcount.html">https://co5.me/2018/180613-wordcount.html</a></p>
+</blockquote>
+<h4 id="安装插件-hexo-symbols-xount-time"><a href="#安装插件-hexo-symbols-xount-time" class="headerlink" title="安装插件 hexo-symbols-xount-time"></a>安装插件 hexo-symbols-xount-time</h4><ul>
+<li>卸掉你在史前教程里装的hexo-wordcount插件！</li>
+</ul>
+<p>在站点的根目录下执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm uninstall hexo-wordcount</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后安装新插件hexo-symbols-xount-time，在站点的根目录下执行以下命令：<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm i hexo-symbols-count-time --save</span></span><br></pre></td></tr></table></figure>
+　　i 就是 install 的简写！</li>
+</ul>
+<h4 id="设置-hexo-symbols-xount-time"><a href="#设置-hexo-symbols-xount-time" class="headerlink" title="设置 hexo-symbols-xount-time"></a>设置 hexo-symbols-xount-time</h4><ul>
+<li>首先在<code>站点配置</code>文件夹下的配置文件里，拉到最后添加如下代码：</li>
+</ul>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time</span>:<span class="string"></span></span><br><span class="line">	<span class="attr">symbols</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">time</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">total_symbols</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">total_time</span>: <span class="string">true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后在<code>主题配置</code>文件，NexT 主题其实已经自带了相关代码，搜索wordcount或者插件名可以看到如下代码：<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Post wordcount display settings</span></span><br><span class="line"><span class="comment">#Dependencies: https://github.com/theme-next/hexo-symbols-count-time</span></span><br><span class="line"><span class="attr">symbols_count_time</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">separated_meta</span>: <span class="string">true</span></span><br><span class="line">  <span class="attr">item_text_post</span>: <span class="string">true</span></span><br><span class="line">  <span class="attr">item_text_total</span>: <span class="string">false</span></span><br><span class="line">  <span class="attr">awl</span>: <span class="string">2</span></span><br><span class="line">  <span class="attr">wpm</span>: <span class="string">300</span></span><br></pre></td></tr></table></figure>
+awl（Average Word Length）的数值是设定多少字符统计为一个字（word），中文博客需要设置为 2。<br>wpm（Words Per Minute）是你的阅读速度，多少字（word）统计为阅读时长一分钟。以下是官方文档里的一些阅读速度参考数据：<br>​            慢速：200<br>​            中速：275（默认）<br>​            快速：350</li>
+</ul>
+<p>还有给中文用户的贴心提示：因为在中文中一个词语的平均长度在 1.5 字左右，所以一般建议设置为awl=2，wpm=300。</p>
+<h2 id="添加备案号"><a href="#添加备案号" class="headerlink" title="添加备案号"></a>添加备案号</h2><p>打开NexT主题目录下的 <code>\themes\next\layout\_partials\footer.swig</code>文件，在底部加入ICP备案号并链接至”<a href="https://beian.miit.gov.cn&quot;，如下：">https://beian.miit.gov.cn&quot;，如下：</a></p>
+<p><code>&lt;a href=&quot;https://beian.miit.gov.cn/&quot;&gt;苏ICP备xxxxxx号&lt;/a&gt;</code></p>
+<p>把备案号换成自己的备案号即可。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署:"></a>Nginx部署:</h1><ol>
+<li><p>ngnix配置文件：/usr/local/nginx/conf/nginx.conf</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">server</span> <span class="string">&#123;</span></span><br><span class="line">    <span class="attr">listen</span>       <span class="string">80;</span></span><br><span class="line">    <span class="attr">server_name</span>  <span class="string">localhost;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">    #charset koi8-r;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">    #access_log  logs/host.access.log  main;</span></span><br><span class="line">   </span><br><span class="line">    <span class="attr">location</span> <span class="string">/ &#123;</span></span><br><span class="line">        <span class="attr">root</span>   <span class="string">html/public;</span></span><br><span class="line">        <span class="attr">index</span>  <span class="string">index.html index.htm;</span></span><br><span class="line">    <span class="attr">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>HTML文件夹：/usr/local/nginx/html<br>把Hexo生成的静态文件夹：public上传至： <code>/usr/local/nginx/html</code></p>
+</li>
+<li><p>Nginx启动   </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span>   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Nginx停止</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> killall nginx</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>工作效率</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>NexT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx安装</title>
+    <url>/2020/04/22/Nginx%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="Nginx获得"><a href="#Nginx获得" class="headerlink" title="Nginx获得"></a>Nginx获得</h1><ul>
+<li><a href="http://nginx.org/">http://nginx.org</a> 官网</li>
+<li><a href="http://www.nginx.cn/doc/index.html">http://www.nginx.cn/doc/index.html</a> 中文文档</li>
+<li>官网源码包  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.16.0.tar.gz -P &#x2F;usr&#x2F;src</span><br></pre></td></tr></table></figure>
+<h1 id="编译环境安装"><a href="#编译环境安装" class="headerlink" title="编译环境安装"></a>编译环境安装</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum -y install gcc gcc-c++ autoconf automake make</span><br><span class="line"># yum -y install pcre pcre-devel zlib zlib-devel openssl openssl-devel</span><br></pre></td></tr></table></figure>
+<h1 id="创建nginx用户"><a href="#创建nginx用户" class="headerlink" title="创建nginx用户"></a>创建nginx用户</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># useradd -M -s &#x2F;sbin&#x2F;nologin nginx</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+</li>
+</ul>
+<h1 id="编译安装Nginx"><a href="#编译安装Nginx" class="headerlink" title="编译安装Nginx"></a>编译安装Nginx</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># tar zxvf nginx-1.16.0.tar.gz </span><br><span class="line"></span><br><span class="line"># cd nginx-1.16.0</span><br><span class="line"></span><br><span class="line"># .&#x2F;configure --user&#x3D;nginx --group&#x3D;nginx  --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx --with-http_ssl_module --with-http_stub_status_module  --with-stream</span><br><span class="line"></span><br><span class="line"># make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"># chown nobody -R &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;</span><br></pre></td></tr></table></figure>
+<p>修改nginx配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>修改pid:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pid         &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br></pre></td></tr></table></figure>
+<h1 id="Nginx启动"><a href="#Nginx启动" class="headerlink" title="Nginx启动"></a>Nginx启动</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<h2 id="查看端口号："><a href="#查看端口号：" class="headerlink" title="查看端口号："></a>查看端口号：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># lsof -i :80</span><br><span class="line"></span><br><span class="line"># netstat -lntp</span><br></pre></td></tr></table></figure>
+<h2 id="查看网站："><a href="#查看网站：" class="headerlink" title="查看网站："></a>查看网站：</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># elinks http://192.168.229.88 --dump</span></span><br></pre></td></tr></table></figure>
+<h1 id="Nginx停止"><a href="#Nginx停止" class="headerlink" title="Nginx停止"></a>Nginx停止</h1><p>使用killall命令终止nginx进程</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># killall nginx</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>killall命令安装：</p>
+<ol>
+<li>使用yum search killall 命令获得killall的安装包名</li>
+<li>yum install psmisc.x86_64</li>
+</ol>
+</blockquote>
+<p><strong>参考</strong>：</p>
+<blockquote>
+<p>从容停止服务<br>这种方法较stop相比就比较温和一些了，需要进程完成当前工作后再停止。</p>
+<p>nginx -s quit</p>
+<p>立即停止服务<br>这种方法比较强硬，无论进程是否在工作，都直接停止进程。</p>
+<p>nginx -s stop</p>
+<p>systemctl 停止<br>systemctl属于Linux命令</p>
+<p>systemctl stop nginx.service</p>
+<p>killall 方法杀死进程<br>直接杀死进程，在上面无效的情况下使用，态度强硬，简单粗暴！</p>
+<p>killall nginx</p>
+</blockquote>
+<h1 id="Nginx-启动服务设置"><a href="#Nginx-启动服务设置" class="headerlink" title="Nginx 启动服务设置"></a>Nginx 启动服务设置</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;nginx.service</span><br></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;The NGINX HTTP and reverse proxy server </span><br><span class="line">After&#x3D;syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking </span><br><span class="line">PIDFile&#x3D;&#x2F;var&#x2F;run&#x2F;nginx.pid</span><br><span class="line">ExecStartPre&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -t</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s reload</span><br><span class="line">ExecStop&#x3D;&#x2F;bin&#x2F;kill -s QUIT $MAINPID</span><br><span class="line">PrivateTmp&#x3D;true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>设置完成后可通过systemctl命令启动/关闭nginx服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># systemctl enable  nginx</span><br><span class="line"></span><br><span class="line"># systemctl start  nginx</span><br><span class="line"># systemctl stop  nginx</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP安装</title>
+    <url>/2020/04/22/PHP%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="编译环境安装"><a href="#编译环境安装" class="headerlink" title="编译环境安装"></a>编译环境安装</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum install -y gcc gcc-c++ make gd-devel libxml2 libxml2-devel \</span><br><span class="line">libcurl libcurl-devel libjpeg-devel libpng-devel openssl-devel \</span><br><span class="line">libxslt-devel bzip2 bzip2-devel freetype-devel</span><br></pre></td></tr></table></figure>
+<h1 id="PHP获得"><a href="#PHP获得" class="headerlink" title="PHP获得"></a>PHP获得</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># cd &#x2F;usr&#x2F;src</span><br><span class="line"># wget http:&#x2F;&#x2F;docs.php.net&#x2F;distributions&#x2F;php-5.6.38.tar.gz</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h1 id="编译安装PHP"><a href="#编译安装PHP" class="headerlink" title="编译安装PHP"></a>编译安装PHP</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># tar zxvf php-5.6.38.tar.gz</span><br><span class="line"># cd php-5.6.38.tar.gz</span><br><span class="line"></span><br><span class="line"># .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;php \</span><br><span class="line">--with-config-file-path&#x3D;&#x2F;usr&#x2F;local&#x2F;php&#x2F;etc \</span><br><span class="line">--enable-fpm --enable-opcache \</span><br><span class="line">--with-mysql --with-mysqli \</span><br><span class="line">--enable-session --with-zlib --with-curl --with-gd \</span><br><span class="line">--with-jpeg-dir --with-png-dir --with-freetype-dir \</span><br><span class="line">--enable-mbstring --enable-xmlwriter --enable-xmlreader \</span><br><span class="line">--enable-xml --enable-sockets --enable-bcmath --with-gettext</span><br><span class="line"></span><br><span class="line"># make -j 4 &amp;&amp; make install</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="PHP配置文件"><a href="#PHP配置文件" class="headerlink" title="PHP配置文件"></a>PHP配置文件</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># cp php.ini-production &#x2F;usr&#x2F;local&#x2F;php&#x2F;etc&#x2F;php.ini</span><br><span class="line"># cp sapi&#x2F;fpm&#x2F;php-fpm.conf &#x2F;usr&#x2F;local&#x2F;php&#x2F;etc&#x2F;php-fpm.conf</span><br></pre></td></tr></table></figure>
+<h1 id="PHP启动服务设置"><a href="#PHP启动服务设置" class="headerlink" title="PHP启动服务设置"></a>PHP启动服务设置</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># cp sapi&#x2F;fpm&#x2F;php-fpm.service &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span><br><span class="line"></span><br><span class="line"># vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;php-fpm.service </span><br></pre></td></tr></table></figure>
+<p>替换路径：/usr/local/php/</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;The PHP FastCGI Process Manager</span><br><span class="line">After&#x3D;syslog.target network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;simple</span><br><span class="line">PIDFile&#x3D;&#x2F;usr&#x2F;local&#x2F;php&#x2F;var&#x2F;run&#x2F;php-fpm.pid</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;php&#x2F;sbin&#x2F;php-fpm --nodaemonize --fpm-config &#x2F;usr&#x2F;local&#x2F;php&#x2F;etc&#x2F;php-fpm.conf</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -USR2 $MAINPID</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>设置完成后可通过systemctl命令启动/关闭php服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># systemctl start php-fpm</span><br><span class="line"># ps -ef | grep php</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>PHP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zabbix 4.0安装</title>
+    <url>/2020/04/22/Zabbix%204.0%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="Zabbix获取"><a href="#Zabbix获取" class="headerlink" title="Zabbix获取"></a>Zabbix获取</h1><p>在网站 <a href="https://www.zabbix.com/cn/download_sources">https://www.zabbix.com/cn/download_sources</a> 下载安装包zabbix-4.0.19.tar.gz 到/usr/src/</p>
+<h1 id="服务器时间同步"><a href="#服务器时间同步" class="headerlink" title="服务器时间同步"></a>服务器时间同步</h1><p>服务器时间若不准确会导致Zabbix编译安装会失败</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ntpdate ntp1.aliyun.com</span><br><span class="line">或</span><br><span class="line"># ntpdate us.pool.ntp.org</span><br><span class="line">或</span><br><span class="line"># ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h1 id="MySQL安装及数据库创建"><a href="#MySQL安装及数据库创建" class="headerlink" title="MySQL安装及数据库创建"></a>MySQL安装及数据库创建</h1><p>MySQL可以yum安装或编译安装，参考之前文档</p>
+<h2 id="1-Zabbix数据库账号创建"><a href="#1-Zabbix数据库账号创建" class="headerlink" title="1. Zabbix数据库账号创建"></a>1. Zabbix数据库账号创建</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;Zabbix!123&#39;;</span><br><span class="line"></span><br><span class="line">mysql&gt; create database zabbix character set utf8 collate utf8_bin;</span><br><span class="line"></span><br><span class="line">mysql&gt; grant all privileges on zabbix.* to zabbix@localhost identified by &#39;Zabbix!123&#39;;</span><br></pre></td></tr></table></figure>
+<h2 id="2-Zabbix数据库导入"><a href="#2-Zabbix数据库导入" class="headerlink" title="2. Zabbix数据库导入"></a>2. Zabbix数据库导入</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># tar zxvf zabbix-4.0.19.tar.gz</span><br><span class="line"></span><br><span class="line"># cd &#x2F;usr&#x2F;src&#x2F;zabbix-4.0.19&#x2F;database&#x2F;mysql</span><br></pre></td></tr></table></figure>
+<p>导入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql -uzabbix -p&#39;Zabbix!123&#39; zabbix &lt; schema.sql</span><br><span class="line"># mysql -uzabbix -p&#39;Zabbix!123&#39; zabbix &lt; images.sql</span><br><span class="line"># mysql -uzabbix -p&#39;Zabbix!123&#39; zabbix &lt; data.sql</span><br></pre></td></tr></table></figure>
+<h1 id="依赖包安装"><a href="#依赖包安装" class="headerlink" title="依赖包安装"></a>依赖包安装</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum install libxml2-devel libcurl-devel libevent-devel net-snmp-devel mysql-community-devel -y</span><br></pre></td></tr></table></figure>
+<h1 id="创建zabbix用户和组"><a href="#创建zabbix用户和组" class="headerlink" title="创建zabbix用户和组"></a>创建zabbix用户和组</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># groupadd zabbix</span><br><span class="line"># useradd -g zabbix zabbix -s &#x2F;sbin&#x2F;nologin</span><br></pre></td></tr></table></figure>
+<h1 id="openjdk安装"><a href="#openjdk安装" class="headerlink" title="openjdk安装"></a>openjdk安装</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># yum search openjdk</span><br><span class="line"># yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel -y</span><br></pre></td></tr></table></figure>
+<h1 id="编译安装Zabbix"><a href="#编译安装Zabbix" class="headerlink" title="编译安装Zabbix"></a>编译安装Zabbix</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;zabbix --enable-server --enable-agent --enable-java --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-libxml2</span><br><span class="line"></span><br><span class="line"># make install</span><br></pre></td></tr></table></figure>
+<p>Zabbix安装目录：/usr/local/zabbix</p>
+<h1 id="Zabbix-Server配置文件"><a href="#Zabbix-Server配置文件" class="headerlink" title="Zabbix Server配置文件"></a>Zabbix Server配置文件</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;local&#x2F;zabbix&#x2F;etc&#x2F;zabbix_server.conf</span><br></pre></td></tr></table></figure>
+<p>修改：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DBHost&#x3D;localhost</span><br><span class="line">DBName&#x3D;zabbix</span><br><span class="line">DBUser&#x3D;zabbix</span><br><span class="line">DBPassword&#x3D;Zabbix!123</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动Zabbix-Server服务"><a href="#启动Zabbix-Server服务" class="headerlink" title="启动Zabbix Server服务"></a>启动Zabbix Server服务</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;zabbix&#x2F;sbin&#x2F;zabbix_server </span><br></pre></td></tr></table></figure>
+<p>或设置Zabbix启动服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;zabbix-server.service</span><br></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;Zabbix Server</span><br><span class="line">After&#x3D;syslog.target</span><br><span class="line">After&#x3D;network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Environment&#x3D;&quot;CONFFILE&#x3D;&#x2F;usr&#x2F;local&#x2F;zabbix&#x2F;etc&#x2F;zabbix_server.conf&quot;</span><br><span class="line">EnvironmentFile&#x3D;-&#x2F;etc&#x2F;sysconfig&#x2F;zabbix-server</span><br><span class="line">Type&#x3D;forking</span><br><span class="line">Restart&#x3D;on-failure</span><br><span class="line">PIDFile&#x3D;&#x2F;tmp&#x2F;zabbix_server.pid</span><br><span class="line">KillMode&#x3D;control-group</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;zabbix&#x2F;sbin&#x2F;zabbix_server -c $CONFFILE</span><br><span class="line">ExecStop&#x3D;&#x2F;bin&#x2F;kill -SIGTERM $MAINPID</span><br><span class="line">RestartSec&#x3D;10s</span><br><span class="line">TimeoutSec&#x3D;0</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="启动Zabbix-Agent服务"><a href="#启动Zabbix-Agent服务" class="headerlink" title="启动Zabbix Agent服务"></a>启动Zabbix Agent服务</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># &#x2F;usr&#x2F;local&#x2F;zabbix&#x2F;sbin&#x2F;zabbix_agentd </span><br></pre></td></tr></table></figure>
+<p>检查Zabbix相关服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ps -ef | grep zabbix</span><br></pre></td></tr></table></figure>
+<h1 id="部署Zabbix-Web界面"><a href="#部署Zabbix-Web界面" class="headerlink" title="部署Zabbix Web界面"></a>部署Zabbix Web界面</h1><p>Zabbix Web前端使用PHP，所以必须运行在支持PHP的Web服务器上</p>
+<h2 id="1-复制Zabbix的php文件"><a href="#1-复制Zabbix的php文件" class="headerlink" title="1. 复制Zabbix的php文件"></a>1. 复制Zabbix的php文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># cd &#x2F;usr&#x2F;src&#x2F;zabbix-4.0.19</span><br><span class="line"># cp &#x2F;usr&#x2F;src&#x2F;zabbix-4.0.19&#x2F;frontends&#x2F;php&#x2F;* &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;html&#x2F; -rf</span><br></pre></td></tr></table></figure>
+<h2 id="2-在Nginx上设置站点"><a href="#2-在Nginx上设置站点" class="headerlink" title="2. 在Nginx上设置站点"></a>2. 在Nginx上设置站点</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf </span><br></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen          80;</span><br><span class="line">    server_name     localhost;</span><br><span class="line"></span><br><span class="line">    access_log      logs&#x2F;zabbix.access.log  main;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">            root    html;</span><br><span class="line">            index   index.php index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">            root                    html;</span><br><span class="line">            fastcgi_pass    127.0.0.1:9000;</span><br><span class="line">            fastcgi_index   index.php;</span><br><span class="line">            fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">            include         fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>重启Nginx服务，测试是否能正常开启Zabbix配置向导网站 <a href="http://192.168.229.88/">http://192.168.229.88</a></p>
+<h1 id="Zabbix配置向导"><a href="#Zabbix配置向导" class="headerlink" title="Zabbix配置向导"></a>Zabbix配置向导</h1><p>根据向导提示信息修改php配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vi &#x2F;usr&#x2F;local&#x2F;php&#x2F;etc&#x2F;php.ini</span><br></pre></td></tr></table></figure>
+<p>修改如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">post_max_size &#x3D; 16M</span><br><span class="line">max_execution_time &#x3D; 300</span><br><span class="line">max_input_time &#x3D; 300</span><br><span class="line">date.timezone &#x3D; Asia&#x2F;Shanghai</span><br><span class="line">always_populate_raw_post_data &#x3D; -1</span><br></pre></td></tr></table></figure>
+<h1 id="Zabbix需要启动的服务："><a href="#Zabbix需要启动的服务：" class="headerlink" title="Zabbix需要启动的服务："></a>Zabbix需要启动的服务：</h1><ul>
+<li>mysql (# systemctl start mysqld.service)</li>
+<li>nginx (# systemctl start nginx.service)</li>
+<li>php (# systemctl start php-fpm.service)</li>
+<li>zabbix_server (# systemctl start zabbix-server.service)</li>
+<li>zabbix_agentd (需执行运行: # /usr/local/zabbix/sbin/zabbix_agentd)</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/12/28/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>国内yum源安装</title>
+    <url>/2021/01/04/%E5%9B%BD%E5%86%85yum%E6%BA%90%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="国内yum源安装"><a href="#国内yum源安装" class="headerlink" title="国内yum源安装"></a>国内yum源安装</h1><h2 id="1-阿里云镜像源"><a href="#1-阿里云镜像源" class="headerlink" title="1. 阿里云镜像源"></a>1. 阿里云镜像源</h2><p><strong>CentOS 7</strong></p>
+<p>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
+<p>或者</p>
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
+<h2 id="2-163镜像源"><a href="#2-163镜像源" class="headerlink" title="2. 163镜像源"></a>2. 163镜像源</h2><p><strong>CentOS 7</strong></p>
+<p>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.163.com/.help/CentOS7-Base-163.repo">http://mirrors.163.com/.help/CentOS7-Base-163.repo</a></p>
+<p><strong>验证:</strong> </p>
+<p>清除yum的缓存、头文件、已下载的软件包等等</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum clean all</span></span><br></pre></td></tr></table></figure>
+<p>重建yum缓存，看是否有报错。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum makecache</span></span><br></pre></td></tr></table></figure>
+<p>查看已启用的镜像源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum repolist all</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+        <tag>YUM</tag>
+      </tags>
+  </entry>
+</search>

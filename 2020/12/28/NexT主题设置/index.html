@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="NexT主题安装 NexT主题官网： http:&#x2F;&#x2F;theme-next.iissnan.com&#x2F; 最新版本NexT的GitHub地址： https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next   下载新的主题包 123cd C:\bloggit clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next themes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NexT主题设置">
+<meta property="og:url" content="http://example.com/2020/12/28/NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Man In The Mirror">
+<meta property="og:description" content="NexT主题安装 NexT主题官网： http:&#x2F;&#x2F;theme-next.iissnan.com&#x2F; 最新版本NexT的GitHub地址： https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next   下载新的主题包 123cd C:\bloggit clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next themes">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-28T13:08:25.000Z">
+<meta property="article:modified_time" content="2021-01-04T02:00:26.898Z">
+<meta property="article:author" content="Rock Qin">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="NexT">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/12/28/NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>NexT主题设置 | Man In The Mirror</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Man In The Mirror</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/28/NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rock.jpg">
+      <meta itemprop="name" content="Rock Qin">
+      <meta itemprop="description" content="人生若只如初见">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Man In The Mirror">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NexT主题设置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-28 21:08:25" itemprop="dateCreated datePublished" datetime="2020-12-28T21:08:25+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-04 10:00:26" itemprop="dateModified" datetime="2021-01-04T10:00:26+08:00">2021-01-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87/" itemprop="url" rel="index"><span itemprop="name">工作效率</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="NexT主题安装"><a href="#NexT主题安装" class="headerlink" title="NexT主题安装"></a>NexT主题安装</h1><blockquote>
+<p>NexT主题官网： <a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/">http://theme-next.iissnan.com/</a></p>
+<p>最新版本NexT的GitHub地址： <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></p>
+</blockquote>
+<ol>
+<li><p>下载新的主题包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\blog</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next          </span><br></pre></td></tr></table></figure></li>
+<li><p>修改Hexo的配置文件：_config.yml，更换theme为 <code>next</code></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme</span>: <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<a id="more"></a>
+
+<ol start="3">
+<li><p>重新生成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\blog\</span><br><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>重新刷新<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 网站查看结果。</p>
+</li>
+</ol>
+<p><strong>升级：</strong></p>
+<p>NexT releases new versions every month. You can update to latest master branch by the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> themes/next</span><br><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="NexT主题设置"><a href="#NexT主题设置" class="headerlink" title="NexT主题设置"></a>NexT主题设置</h1><blockquote>
+<p>NexT主题官网： <a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/">http://theme-next.iissnan.com/</a></p>
+</blockquote>
+<p><strong>NexT主题配置文件</strong>：<code>C:\blog\themes\next\_config.yml</code></p>
+<h2 id="菜单设置（左侧栏）"><a href="#菜单设置（左侧栏）" class="headerlink" title="菜单设置（左侧栏）"></a>菜单设置（左侧栏）</h2><p>启用About，Tags，Categories等菜单。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">home</span>: <span class="string">/ || fa fa-home</span></span><br><span class="line">  <span class="attr">about</span>: <span class="string">/about/ || fa fa-user</span></span><br><span class="line">  <span class="attr">tags</span>: <span class="string">/tags/ || fa fa-tags</span></span><br><span class="line">  <span class="attr">categories</span>: <span class="string">/categories/ || fa fa-th</span></span><br><span class="line">  <span class="attr">archives</span>: <span class="string">/archives/ || fa fa-archive</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="About页面设置"><a href="#About页面设置" class="headerlink" title="About页面设置"></a>About页面设置</h2><p>新建一个about页面：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo new page <span class="string">&quot;about&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>在blog/source下会生成一个新的文件夹about，在该文件夹下会有一个index.md文件。</p>
+<h2 id="头像设置"><a href="#头像设置" class="headerlink" title="头像设置"></a>头像设置</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar</span>:<span class="string"></span></span><br><span class="line"><span class="comment">  # Replace the default image and set the url here.</span></span><br><span class="line"><span class="comment">  # url: /images/avatar.gif</span></span><br><span class="line">  <span class="attr">url</span>: <span class="string">/images/rock.jpg  </span></span><br><span class="line"><span class="comment">  # If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded</span>: <span class="string">false</span></span><br><span class="line"><span class="comment">  # If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated</span>: <span class="string">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Social设置"><a href="#Social设置" class="headerlink" title="Social设置"></a>Social设置</h2><p>启用Social链接:</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social</span>:<span class="string"></span></span><br><span class="line"> <span class="attr">GitHub</span>: <span class="string">https://github.com/bluemirror || fab fa-github</span></span><br><span class="line"> <span class="meta">E-Mail</span>: <span class="string">mailto:rockqin@126.com || fa fa-envelope</span></span><br><span class="line"><span class="comment"> #Weibo: https://weibo.com/yourname || fab fa-weibo  </span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="链接设置"><a href="#链接设置" class="headerlink" title="链接设置"></a>链接设置</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">links</span>:<span class="string"></span></span><br><span class="line"> <span class="attr">Bing</span>: <span class="string">https://cn.bing.com/</span></span><br><span class="line"> <span class="attr">Google</span>: <span class="string">https://www.google.com</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="创建“标签页”和“分类页”"><a href="#创建“标签页”和“分类页”" class="headerlink" title="创建“标签页”和“分类页”"></a>创建“标签页”和“分类页”</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\blog&gt;hexo n page tags</span><br><span class="line">C:\blog&gt;hexo n page categories</span><br></pre></td></tr></table></figure>
+<p><strong>Tags页设置：</strong>C:\blog\source\tags\index.md</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Tags</span><br><span class="line">date: 2020-12-21 14:58:24</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p><strong>Categories页设置：</strong>C:\blog\source\categories\index.md</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Categories</span><br><span class="line">date: 2020-12-21 16:35:27</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="增加搜索功能"><a href="#增加搜索功能" class="headerlink" title="增加搜索功能"></a>增加搜索功能</h2><p>Local Search 由 flashlab 贡献，添加百度/谷歌/本地 自定义站点内容搜索。</p>
+<p>安装 hexo-generator-searchdb，在站点的根目录下执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>站点配置</code>文件，新增以下内容到任意位置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">search</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">path</span>: <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field</span>: <span class="string">post</span></span><br><span class="line">  <span class="attr">format</span>: <span class="string">html</span></span><br><span class="line">  <span class="attr">limit</span>: <span class="string">10000</span></span><br></pre></td></tr></table></figure>
+<p>编辑 <code>主题配置</code>文件，启用本地搜索功能：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">enable</span>: <span class="string">true</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="不蒜子统计"><a href="#不蒜子统计" class="headerlink" title="不蒜子统计"></a>不蒜子统计</h2><p>编辑 <code>主题配置</code>文件 中的busuanzi_count的配置项。<br>当enable: true时，代表开启全局开关。若site_uv、site_pv、page_pv的值均为false时，不蒜子仅作记录而不会在页面上显示。</p>
+<h2 id="隐藏网页底部强力驱动"><a href="#隐藏网页底部强力驱动" class="headerlink" title="隐藏网页底部强力驱动"></a>隐藏网页底部强力驱动</h2><p>编辑配置文件： C:\blog\themes\next\layout_partials\footer.swig</p>
+<p>删除或注释掉footer.powered 相关项。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&lt;!--</span></span><br><span class="line"><span class="meta">&#123;%-</span> <span class="string">if theme.footer.powered %&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">&lt;div</span> <span class="string">class=&quot;powered-by&quot;&gt;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span></span><br><span class="line">      <span class="meta">&#123;%-</span> <span class="string">set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span></span><br><span class="line">    <span class="meta">&#123;%-</span> <span class="string">endif %&#125;</span></span><br><span class="line">    <span class="meta">&#123;&#123;-</span> <span class="string">__(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span></span><br><span class="line">  <span class="attr">&lt;/div&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&#123;%-</span> <span class="string">endif %&#125;</span></span><br><span class="line"><span class="attr">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="实现统计功能-字数统计和阅读时长"><a href="#实现统计功能-字数统计和阅读时长" class="headerlink" title="实现统计功能(字数统计和阅读时长)"></a>实现统计功能(字数统计和阅读时长)</h2><h3 id="A-适用于NexT老版本，最新版无效"><a href="#A-适用于NexT老版本，最新版无效" class="headerlink" title="A. 适用于NexT老版本，最新版无效"></a>A. 适用于NexT老版本，最新版无效</h3><p>在站点的根目录下执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
+<p>主题配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">post_wordcount:</span><br><span class="line">  wordcount: true</span><br><span class="line">  min2read: true</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="B-适用于Hexo-NexT-v6-3-0-字数统计"><a href="#B-适用于Hexo-NexT-v6-3-0-字数统计" class="headerlink" title="B.  适用于Hexo NexT v6.3.0 字数统计"></a>B.  适用于Hexo NexT v6.3.0 字数统计</h3><blockquote>
+<p>参考： <a target="_blank" rel="noopener" href="https://co5.me/2018/180613-wordcount.html">https://co5.me/2018/180613-wordcount.html</a></p>
+</blockquote>
+<h4 id="安装插件-hexo-symbols-xount-time"><a href="#安装插件-hexo-symbols-xount-time" class="headerlink" title="安装插件 hexo-symbols-xount-time"></a>安装插件 hexo-symbols-xount-time</h4><ul>
+<li>卸掉你在史前教程里装的hexo-wordcount插件！</li>
+</ul>
+<p>在站点的根目录下执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm uninstall hexo-wordcount</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后安装新插件hexo-symbols-xount-time，在站点的根目录下执行以下命令：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm i hexo-symbols-count-time --save</span></span><br></pre></td></tr></table></figure>
+　　i 就是 install 的简写！</li>
+</ul>
+<h4 id="设置-hexo-symbols-xount-time"><a href="#设置-hexo-symbols-xount-time" class="headerlink" title="设置 hexo-symbols-xount-time"></a>设置 hexo-symbols-xount-time</h4><ul>
+<li>首先在<code>站点配置</code>文件夹下的配置文件里，拉到最后添加如下代码：</li>
+</ul>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time</span>:<span class="string"></span></span><br><span class="line">	<span class="attr">symbols</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">time</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">total_symbols</span>: <span class="string">true</span></span><br><span class="line">	<span class="attr">total_time</span>: <span class="string">true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后在<code>主题配置</code>文件，NexT 主题其实已经自带了相关代码，搜索wordcount或者插件名可以看到如下代码：<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Post wordcount display settings</span></span><br><span class="line"><span class="comment">#Dependencies: https://github.com/theme-next/hexo-symbols-count-time</span></span><br><span class="line"><span class="attr">symbols_count_time</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">separated_meta</span>: <span class="string">true</span></span><br><span class="line">  <span class="attr">item_text_post</span>: <span class="string">true</span></span><br><span class="line">  <span class="attr">item_text_total</span>: <span class="string">false</span></span><br><span class="line">  <span class="attr">awl</span>: <span class="string">2</span></span><br><span class="line">  <span class="attr">wpm</span>: <span class="string">300</span></span><br></pre></td></tr></table></figure>
+awl（Average Word Length）的数值是设定多少字符统计为一个字（word），中文博客需要设置为 2。<br>wpm（Words Per Minute）是你的阅读速度，多少字（word）统计为阅读时长一分钟。以下是官方文档里的一些阅读速度参考数据：<br>​            慢速：200<br>​            中速：275（默认）<br>​            快速：350</li>
+</ul>
+<p>还有给中文用户的贴心提示：因为在中文中一个词语的平均长度在 1.5 字左右，所以一般建议设置为awl=2，wpm=300。</p>
+<h2 id="添加备案号"><a href="#添加备案号" class="headerlink" title="添加备案号"></a>添加备案号</h2><p>打开NexT主题目录下的 <code>\themes\next\layout\_partials\footer.swig</code>文件，在底部加入ICP备案号并链接至”<a href="https://beian.miit.gov.cn&quot;，如下：">https://beian.miit.gov.cn&quot;，如下：</a></p>
+<p><code>&lt;a href=&quot;https://beian.miit.gov.cn/&quot;&gt;苏ICP备xxxxxx号&lt;/a&gt;</code></p>
+<p>把备案号换成自己的备案号即可。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署:"></a>Nginx部署:</h1><ol>
+<li><p>ngnix配置文件：/usr/local/nginx/conf/nginx.conf</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server</span> <span class="string">&#123;</span></span><br><span class="line">    <span class="attr">listen</span>       <span class="string">80;</span></span><br><span class="line">    <span class="attr">server_name</span>  <span class="string">localhost;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">    #charset koi8-r;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">    #access_log  logs/host.access.log  main;</span></span><br><span class="line">   </span><br><span class="line">    <span class="attr">location</span> <span class="string">/ &#123;</span></span><br><span class="line">        <span class="attr">root</span>   <span class="string">html/public;</span></span><br><span class="line">        <span class="attr">index</span>  <span class="string">index.html index.htm;</span></span><br><span class="line">    <span class="attr">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>HTML文件夹：/usr/local/nginx/html<br>把Hexo生成的静态文件夹：public上传至： <code>/usr/local/nginx/html</code></p>
+</li>
+<li><p>Nginx启动   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/nginx/sbin/nginx</span>   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Nginx停止</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> killall nginx</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/NexT/" rel="tag"># NexT</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/28/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/04/%E5%9B%BD%E5%86%85yum%E6%BA%90%E5%AE%89%E8%A3%85/" rel="next" title="国内yum源安装">
+      国内yum源安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT%E4%B8%BB%E9%A2%98%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">NexT主题安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">NexT主题设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8F%9C%E5%8D%95%E8%AE%BE%E7%BD%AE%EF%BC%88%E5%B7%A6%E4%BE%A7%E6%A0%8F%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">菜单设置（左侧栏）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#About%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">About页面设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B4%E5%83%8F%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">头像设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Social%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.4.</span> <span class="nav-text">Social设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.5.</span> <span class="nav-text">链接设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E2%80%9C%E6%A0%87%E7%AD%BE%E9%A1%B5%E2%80%9D%E5%92%8C%E2%80%9C%E5%88%86%E7%B1%BB%E9%A1%B5%E2%80%9D"><span class="nav-number">2.6.</span> <span class="nav-text">创建“标签页”和“分类页”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD"><span class="nav-number">2.7.</span> <span class="nav-text">增加搜索功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%92%9C%E5%AD%90%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.8.</span> <span class="nav-text">不蒜子统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%BD%91%E9%A1%B5%E5%BA%95%E9%83%A8%E5%BC%BA%E5%8A%9B%E9%A9%B1%E5%8A%A8"><span class="nav-number">2.9.</span> <span class="nav-text">隐藏网页底部强力驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%9F%E8%AE%A1%E5%8A%9F%E8%83%BD-%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1%E5%92%8C%E9%98%85%E8%AF%BB%E6%97%B6%E9%95%BF"><span class="nav-number">2.10.</span> <span class="nav-text">实现统计功能(字数统计和阅读时长)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-%E9%80%82%E7%94%A8%E4%BA%8ENexT%E8%80%81%E7%89%88%E6%9C%AC%EF%BC%8C%E6%9C%80%E6%96%B0%E7%89%88%E6%97%A0%E6%95%88"><span class="nav-number">2.10.1.</span> <span class="nav-text">A. 适用于NexT老版本，最新版无效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-%E9%80%82%E7%94%A8%E4%BA%8EHexo-NexT-v6-3-0-%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.10.2.</span> <span class="nav-text">B.  适用于Hexo NexT v6.3.0 字数统计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6-hexo-symbols-xount-time"><span class="nav-number">2.10.2.1.</span> <span class="nav-text">安装插件 hexo-symbols-xount-time</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-hexo-symbols-xount-time"><span class="nav-number">2.10.2.2.</span> <span class="nav-text">设置 hexo-symbols-xount-time</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%A4%87%E6%A1%88%E5%8F%B7"><span class="nav-number">2.11.</span> <span class="nav-text">添加备案号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">Nginx部署:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rock Qin"
+      src="/images/rock.jpg">
+  <p class="site-author-name" itemprop="name">Rock Qin</p>
+  <div class="site-description" itemprop="description">人生若只如初见</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bluemirror" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bluemirror" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:rockqin@126.com" title="E-Mail → mailto:rockqin@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://cn.bing.com/" title="https:&#x2F;&#x2F;cn.bing.com&#x2F;" rel="noopener" target="_blank">Bing</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.google.com/" title="https:&#x2F;&#x2F;www.google.com" rel="noopener" target="_blank">Google</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rock Qin</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">16k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">14 mins.</span>
+</div>
+
+
+<!--
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+-->
+
+<a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">苏ICP备2021000140号</a>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
