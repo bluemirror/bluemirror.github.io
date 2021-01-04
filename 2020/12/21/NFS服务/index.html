@@ -31,7 +31,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://rockimgbed.oss-cn-shanghai.aliyuncs.com/image-20201215103001006.png">
 <meta property="article:published_time" content="2020-12-21T02:20:28.000Z">
-<meta property="article:modified_time" content="2021-01-04T10:41:03.367Z">
+<meta property="article:modified_time" content="2021-01-04T13:07:27.423Z">
 <meta property="article:author" content="Rock Qin">
 <meta property="article:tag" content="NFS">
 <meta property="article:tag" content="DocShare">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-04 18:41:03" itemprop="dateModified" datetime="2021-01-04T18:41:03+08:00">2021-01-04</time>
+                <time title="Modified: 2021-01-04 21:07:27" itemprop="dateModified" datetime="2021-01-04T21:07:27+08:00">2021-01-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -334,7 +334,7 @@
 
 
 <h2 id="客户端自动挂载"><a href="#客户端自动挂载" class="headerlink" title="客户端自动挂载"></a>客户端自动挂载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line"></span><br><span class="line">192.168.229.147:&#x2F;protected       &#x2F;mnt&#x2F;protected          nfs     defaults,v3 0 0</span><br></pre></td></tr></table></figure>
-<p>备注： 若不设置开机自动挂载NFS盘，则当服务器重启后/data/NBUMOUNT_NAS/ 将不会挂载到NFS盘上，所有Copy到/data/NBUMOUNT_NAS/ 目录下的文件将全部存放在服务器本地盘下，最终会引起服务器磁盘空间减小</p>
+<p>备注： 若不设置开机自动挂载NFS盘，则当服务器重启后/data/NBUMOUNT_NAS/ 将不会挂载到NFS盘上，所有Copy到/data/NBUMOUNT_NAS/ 目录下的文件将全部存放在服务器本地盘下，最终会引起服务器磁盘空间减小。</p>
 
     </div>
 
