@@ -21,6 +21,86 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux下源码安装Redis</title>
+    <url>/2021/01/04/Linux%E4%B8%8B%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<blockquote>
+<p>基本知识</p>
+<p>1、Redis的数据类型：</p>
+<p>　　字符串、列表（lists）、集合（sets）、有序集合（sorts sets）、哈希表（hashs）</p>
+<p>2、Redis和memcache相比的独特之处：</p>
+<p>　　（1）redis可以用来做存储（storge）、而memcache是来做缓存（cache）。这个特点主要是因为其有“持久化”功能</p>
+<p>　　（2）存储的数据有“结构”，对于memcache来说，存储的数据，只有一种类型——“字符串”，而redis则可以存储字符串、链表、集合、有序集合、哈序结构</p>
+<p>3、持久化的两种方式：</p>
+<p>　　Redis将数据存储于内存中，或被配置为使用虚拟内存。</p>
+<p>　　实现数据持久化的两种方式：（1）使用截图的方式，将内存中的数据不断写入磁盘（性能高，但可能会引起一定程度的数据丢失）</p>
+<p>　　　　　　　　　　　　　　　（2）使用类似mysql的方式，记录每次更新的日志</p>
+<p>4、Redis的主从同步：对提高读取性能非常有益</p>
+<p>5、Redis服务端的默认端口是6379</p>
+</blockquote>
+<ol>
+<li><p>Download Redis源码包</p>
+<p>下载地址：<code>http://redis.io/download</code>，下载最新稳定版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wget  http://download.redis.io/releases/redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure></li>
+<li><p>解压并进入其目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar xzvf redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a></li>
+<li><p>编译并安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> redis-5.0.3</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make MELLOC=libc</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> src</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install PREFIX=/usr/<span class="built_in">local</span>/redis</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><font color=red>注意：</font>必须使用make MELLOC=libc来编译，否则编译安装时会报错</p>
+</blockquote>
+</li>
+<li><p>将默认redis.conf 配置文件复制到/usr/local/redis/etc/ 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp /root/redis-5.0.3/redis.conf /usr/<span class="built_in">local</span>/redis/etc/</span></span><br></pre></td></tr></table></figure>
+
+<p>  默认情况，redis不是在后台运行，我们需要把redis放在后台运行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
+<p> 将daemonize的值改为yes</p>
+</li>
+</ol>
+<ol start="5">
+<li><p>启动redis服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-server /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
+<p> 检查是否有redis进程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ps -ef | grep 6379</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端连接</p>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli  -h 127.0.0.1 -p 6379</span></span><br></pre></td></tr></table></figure>
+
+<p>   设置键值对: <code>set mykey abc</code><br>   取出键值对: <code>get mykey</code></p>
+</li>
+<li><p>停止redis实例</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> pkill redis-server</span></span><br></pre></td></tr></table></figure></li>
+<li><p>让redis开机自启</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/rc.local</span></span><br></pre></td></tr></table></figure>
+<p>添加:</p>
+</li>
+</ol>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">/usr/local/redis/bin/redis-server</span> <span class="string">/usr/local/redis/etc/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"></span><br><span class="line"><span class="attr">sudo</span> <span class="string">-i -u root /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf &gt; /root/redis_startup.log 2&gt;&amp;1</span></span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li><p>在CentOS 7下需增加/etc/rc.d/rc.local的执行权限才能使/etc/rc.local生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chmod +x /etc/rc.d/rc.local</span></span><br></pre></td></tr></table></figure>
+<p>注：请参考《CentOS 7开机/etc/rc.local 不执行的问题》- <a href="http://wangying.sinaapp.com/archives/2105">http://wangying.sinaapp.com/archives/2105</a></p>
+</li>
+</ol>
+<blockquote>
+<p>/usr/local/redis/bin目录下的文件：</p>
+<p>　　redis-benchmark：redis性能测试工具</p>
+<p>　　redis-check-aof：检查aof日志的工具</p>
+<p>　　redis-check-dump：检查rdb日志的工具</p>
+<p>　　redis-cli：连接用的客户端</p>
+<p>　　redis-server：redis服务进程</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>源码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NFS服务</title>
     <url>/2020/12/21/NFS%E6%9C%8D%E5%8A%A1/</url>
     <content><![CDATA[<h1 id="NFS-的软件结构"><a href="#NFS-的软件结构" class="headerlink" title="NFS 的软件结构"></a>NFS 的软件结构</h1><p>NFS 这个咚咚真的是很简单，上面我们提到的 NFS 软件中，配置文件只有一个，执行档也不多， 记录文件也三三两两而已吶！赶紧先来看一看吧！ ^_^</p>
@@ -110,87 +190,8 @@
         <category>Python</category>
       </categories>
       <tags>
+        <tag>文档</tag>
         <tag>MicroPython</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux下源码安装Redis</title>
-    <url>/2021/01/04/Linux%E4%B8%8B%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85Redis/</url>
-    <content><![CDATA[<blockquote>
-<p>基本知识</p>
-<p>1、Redis的数据类型：</p>
-<p>　　字符串、列表（lists）、集合（sets）、有序集合（sorts sets）、哈希表（hashs）</p>
-<p>2、Redis和memcache相比的独特之处：</p>
-<p>　　（1）redis可以用来做存储（storge）、而memcache是来做缓存（cache）。这个特点主要是因为其有“持久化”功能</p>
-<p>　　（2）存储的数据有“结构”，对于memcache来说，存储的数据，只有一种类型——“字符串”，而redis则可以存储字符串、链表、集合、有序集合、哈序结构</p>
-<p>3、持久化的两种方式：</p>
-<p>　　Redis将数据存储于内存中，或被配置为使用虚拟内存。</p>
-<p>　　实现数据持久化的两种方式：（1）使用截图的方式，将内存中的数据不断写入磁盘（性能高，但可能会引起一定程度的数据丢失）</p>
-<p>　　　　　　　　　　　　　　　（2）使用类似mysql的方式，记录每次更新的日志</p>
-<p>4、Redis的主从同步：对提高读取性能非常有益</p>
-<p>5、Redis服务端的默认端口是6379</p>
-</blockquote>
-<ol>
-<li><p>Download Redis源码包</p>
-<p>下载地址：<code>http://redis.io/download</code>，下载最新稳定版本</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wget  http://download.redis.io/releases/redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure></li>
-<li><p>解压并进入其目录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar xzvf redis-5.0.3.tar.gz</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a></li>
-<li><p>编译并安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> redis-5.0.3</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make MELLOC=libc</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> src</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install PREFIX=/usr/<span class="built_in">local</span>/redis</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><font color=red>注意：</font>必须使用make MELLOC=libc来编译，否则编译安装时会报错</p>
-</blockquote>
-</li>
-<li><p>将默认redis.conf 配置文件复制到/usr/local/redis/etc/ 目录下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp /root/redis-5.0.3/redis.conf /usr/<span class="built_in">local</span>/redis/etc/</span></span><br></pre></td></tr></table></figure>
-
-<p>  默认情况，redis不是在后台运行，我们需要把redis放在后台运行</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
-<p> 将daemonize的值改为yes</p>
-</li>
-</ol>
-<ol start="5">
-<li><p>启动redis服务</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-server /usr/<span class="built_in">local</span>/redis/etc/redis.conf</span></span><br></pre></td></tr></table></figure>
-<p> 检查是否有redis进程</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ps -ef | grep 6379</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>客户端连接</p>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli  -h 127.0.0.1 -p 6379</span></span><br></pre></td></tr></table></figure>
-
-<p>   设置键值对: <code>set mykey abc</code><br>   取出键值对: <code>get mykey</code></p>
-</li>
-<li><p>停止redis实例</p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /usr/<span class="built_in">local</span>/redis/bin/redis-cli shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> pkill redis-server</span></span><br></pre></td></tr></table></figure></li>
-<li><p>让redis开机自启</p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/rc.local</span></span><br></pre></td></tr></table></figure>
-<p>添加:</p>
-</li>
-</ol>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">/usr/local/redis/bin/redis-server</span> <span class="string">/usr/local/redis/etc/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"></span><br><span class="line"><span class="attr">sudo</span> <span class="string">-i -u root /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf &gt; /root/redis_startup.log 2&gt;&amp;1</span></span><br></pre></td></tr></table></figure>
-<ol start="9">
-<li><p>在CentOS 7下需增加/etc/rc.d/rc.local的执行权限才能使/etc/rc.local生效</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chmod +x /etc/rc.d/rc.local</span></span><br></pre></td></tr></table></figure>
-<p>注：请参考《CentOS 7开机/etc/rc.local 不执行的问题》- <a href="http://wangying.sinaapp.com/archives/2105">http://wangying.sinaapp.com/archives/2105</a></p>
-</li>
-</ol>
-<blockquote>
-<p>/usr/local/redis/bin目录下的文件：</p>
-<p>　　redis-benchmark：redis性能测试工具</p>
-<p>　　redis-check-aof：检查aof日志的工具</p>
-<p>　　redis-check-dump：检查rdb日志的工具</p>
-<p>　　redis-cli：连接用的客户端</p>
-<p>　　redis-server：redis服务进程</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-        <tag>源码</tag>
       </tags>
   </entry>
   <entry>
@@ -395,6 +396,21 @@ awl（Average Word Length）的数值是设定多少字符统计为一个字（w
       </tags>
   </entry>
   <entry>
+    <title>Python入门速查表 - 文档</title>
+    <url>/2021/01/07/Python%E5%85%A5%E9%97%A8%E9%80%9F%E6%9F%A5%E8%A1%A8/</url>
+    <content><![CDATA[<p><strong>Python入门速查表</strong></p>
+<blockquote>
+<p>文档下载：<a href="https://rockimgbed.oss-cn-shanghai.aliyuncs.com/Python%E5%85%A5%E9%97%A8%E9%80%9F%E6%9F%A5%E8%A1%A8.pdf">Python入门速查表</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>文档</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zabbix 4.0安装</title>
     <url>/2020/04/22/Zabbix%204.0%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<h1 id="Zabbix获取"><a href="#Zabbix获取" class="headerlink" title="Zabbix获取"></a>Zabbix获取</h1><p>在网站 <a href="https://www.zabbix.com/cn/download_sources">https://www.zabbix.com/cn/download_sources</a> 下载安装包zabbix-4.0.19.tar.gz 到/usr/src/</p>
@@ -450,20 +466,6 @@ awl（Average Word Length）的数值是设定多少字符统计为一个字（w
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/12/28/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>国内yum源安装</title>
     <url>/2021/01/04/%E5%9B%BD%E5%86%85yum%E6%BA%90%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<h1 id="国内yum源安装"><a href="#国内yum源安装" class="headerlink" title="国内yum源安装"></a>国内yum源安装</h1><h2 id="1-阿里云镜像源"><a href="#1-阿里云镜像源" class="headerlink" title="1. 阿里云镜像源"></a>1. 阿里云镜像源</h2><p><strong>CentOS 7</strong></p>
@@ -486,5 +488,19 @@ awl（Average Word Length）的数值是设定多少字符统计为一个字（w
         <tag>CentOS</tag>
         <tag>YUM</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/12/28/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
 </search>
